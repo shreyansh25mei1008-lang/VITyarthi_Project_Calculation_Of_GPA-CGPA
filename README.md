@@ -129,4 +129,3 @@ The file includes an if __name__ == "__main__": block with demonstration tests t
 
 To run the program, execute the file from your terminal:
 
-python gpa_cgpa_calculator.py
