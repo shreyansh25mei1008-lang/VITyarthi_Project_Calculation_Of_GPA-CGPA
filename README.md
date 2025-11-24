@@ -1,79 +1,118 @@
-GPA and CGPA Calculator (Relative Grading System)
-Overview
-This Python program implements a complex academic grading system based on relative performance (using the class Mean ($\mu$) and Standard Deviation ($\sigma$)) combined with absolute minimum pass criteria. It provides functions to:
-Determine the Letter Grade for a course based on relative and absolute rules.
-Calculate the Grade Point Average (GPA) for a single semester.
-Calculate the Cumulative Grade Point Average (CGPA) across multiple semesters.
-Prerequisites
-The program requires Python 3.6 or higher. No external libraries are needed beyond standard built-in modules (typing).
-Core Grading Logic Implemented
-The calculate_letter_grade function incorporates the following rules based on the provided institutional criteria:
-1. Relative Grading Formula (Determines S, A, B, C, D, E)
-The letter grade is assigned based on where the student's total_marks fall relative to the class mean ($\mu$) and standard deviation ($\sigma$):
-Grade
-Criteria
-S
-Total Marks $\ge$ ($\mu + 1.5\sigma$)
-A
-($\mu + 0.5\sigma$) $\le$ Total Marks $<$ ($\mu + 1.5\sigma$)
-B
-($\mu - 0.5\sigma$) $\le$ Total Marks $<$ ($\mu + 0.5\sigma$)
-C
-($\mu - 1.0\sigma$) $\le$ Total Marks $<$ ($\mu - 0.5\sigma$)
-D
-($\mu - 1.5\sigma$) $\le$ Total Marks $<$ ($\mu - 1.0\sigma$)
-E
-Total Marks $<$ ($\mu - 1.5\sigma$) (provided absolute pass criteria are met)
+📘 Relative Grading System + GPA/CGPA Calculator
 
-2. Absolute Fail Criteria (Overrides Relative Grade to 'F')
-The program checks for mandatory minimum requirements first:
-For LT/LP/LTP Courses: The grade is 'F' if (TEE Marks < 40%) OR (CAT I + CAT II + TEE Total < 40%).
-For PJ/P Courses: The grade is 'F' if (TEE Marks < 50%) OR (Project/Lab CAM + TEE Total < 50%).
-Program Structure and Usage
-The program is structured around a utility function for grading and an object-oriented approach for data management.
-Class: Course
-This class is used to store and manage course data necessary for GPA/CGPA calculation.
-Attribute
-Type
-Description
-name
-str
-Name of the course.
-credits
-float
-Credit weightage of the course.
-letter_grade
-str
-The final grade assigned (e.g., "S", "A", "F").
+A Python program that simulates relative grade assignment and calculates GPA and CGPA based on course grades.
 
-Function: calculate_letter_grade()
-This is the core grading engine.
-def calculate_letter_grade(
-    total_marks: float, 
-    tee_marks: float, 
-    cat1_cat2_tee_total: float,
-    mean: float, 
-    std_dev: float,
-    course_type: str = "LT/LP/LTP"
-) -> str:
-    # ... implementation details
+This project includes:
+
+A dynamic relative grading algorithm using mean & standard deviation
+
+Minimum pass criteria for different course types
+
+GPA & CGPA computation using weighted grade points
+
+A sample demonstration (Part 1 & Part 2) showing how the system works
+
+✨ Features
+🎯 1. Relative Grade Assignment
+
+Grades are assigned based on the student’s total marks relative to the mean and standard deviation:
+
+Condition	Grade
+total ≥ mean + 1.5σ	S
+total ≥ mean + 0.5σ	A
+total ≥ mean − 0.5σ	B
+total ≥ mean − 1.0σ	C
+total ≥ mean − 1.5σ	D
+otherwise	E
+🔐 2. Pass/Fail Rules
+For LT / LP / LTP courses:
+
+TEE < 40% → F
+
+Overall (CAT1 + CAT2 + TEE) < 40% → F
+
+For P / PJ courses:
+
+TEE < 50% → F
+
+Overall < 50% → F
+
+➗ 3. GPA Calculation
+
+Letter grades map to grade points:
+
+S:10 | A:9 | B:8 | C:7 | D:6 | E:5 | F:0 | N:0 | P:-1
 
 
-Function: calculate_gpa()
-Calculates the weighted average grade point for a list of Course objects (a single semester). Note: Courses with a 'P' (Pass-Fail) grade are excluded from the calculation.
-def calculate_gpa(courses: List[Course]) -> float:
-    # ... implementation details
+Courses with P grade are excluded from GPA (ignored due to grade point -1).
+
+GPA formula:
+
+GPA = Σ(grade_point × credits) / Σ(credits)
+
+📊 4. CGPA Calculation
+
+CGPA is computed by flattening all semesters and applying the same GPA formula across all courses.
+
+📁 Project Structure
+.
+├── main.py      # Program source code
+└── README.md    # Documentation
+
+▶️ Running the Program
+
+Make sure you have Python 3.7+ installed.
+
+Run:
+
+python main.py
 
 
-Function: calculate_cgpa()
-Calculates the cumulative weighted average across multiple semesters (a list of lists of Course objects).
-def calculate_cgpa(semesters: List[List[Course]]) -> float:
-    # ... implementation details
+You will see:
 
+Relative grading simulation
 
-How to Run the Demonstration
-The file includes an if __name__ == "__main__": block with demonstration tests that simulate various student performances (S grade, B grade, absolute F grade) and calculates sample GPA and CGPA values.
-To run the program, execute the file from your terminal:
-python gpa_cgpa_calculator.py
+Semester 1 GPA
 
+Semester 2 GPA
 
+Total attempted credits
+
+Final CGPA
+
+🧪 Example Output
+--- PART 1: Relative Grade Assignment Simulation ---
+Marks: 81.00 (TEE Pass) -> Grade: S
+Marks: 65.00 (TEE Pass) -> Grade: B
+Marks: 49.00 (TEE Pass) -> Grade: E
+Marks: 50.00 (TEE: 18.0 - TEE Fail) -> Grade: F
+
+--- PART 2: GPA and CGPA Calculation ---
+Semester 1 GPA: 8.89
+Semester 2 GPA: 5.46
+
+Total Credits Attempted (non-P): 18.5
+Cumulative Grade Point Average (CGPA): 6.87
+
+🧩 Code Components
+calculate_letter_grade()
+
+Implements pass criteria + relative grade cutoff logic.
+
+Course class
+
+Stores course name, credits, and letter grade.
+
+calculate_gpa()
+
+Computes GPA for a list of Course objects.
+
+calculate_cgpa()
+
+Computes CGPA across semesters.
+
+🔧 Requirements
+
+Python 3.7+
+
+No external libraries required
